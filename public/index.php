@@ -4,7 +4,12 @@
  * This is the only HTML page served for all storefront routes.
  * The SPA router handles client-side navigation.
  */
-define('VICMIC_ROOT', dirname(__DIR__));
+// Auto-detect deployment structure (cPanel vs Local)
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    define('VICMIC_ROOT', dirname(__DIR__));
+} else {
+    define('VICMIC_ROOT', dirname(__DIR__) . '/vicmic_core');
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">

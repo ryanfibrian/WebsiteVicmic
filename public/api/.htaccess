@@ -1,0 +1,12 @@
+# Deny direct access to API directory
+<IfModule mod_authz_core.c>
+    # Allow all through (routing handled by parent .htaccess)
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Route everything to index.php within this directory
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

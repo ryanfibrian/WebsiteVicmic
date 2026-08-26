@@ -3,7 +3,7 @@ name: Deploy to cPanel
 on:
   push:
     branches:
-      - main
+      - main # Jalankan otomatis setiap ada push ke branch main
 
 jobs:
   deploy:
@@ -30,8 +30,6 @@ jobs:
             **/.git*/**
             public/**
             .github/**
-            vicmic_core.zip
-            vicmic_public.zip
 
       - name: Sync Public Files (public_html)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4

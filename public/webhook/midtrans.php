@@ -6,7 +6,12 @@
  * Verifies signature, updates order status, handles stock operations.
  */
 
-define('VICMIC_ROOT', dirname(__DIR__, 2));
+// Auto-detect deployment structure (cPanel vs Local)
+if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+    define('VICMIC_ROOT', dirname(__DIR__));
+} else {
+    define('VICMIC_ROOT', dirname(__DIR__, 2) . '/vicmic_core');
+}
 require_once VICMIC_ROOT . '/vendor/autoload.php';
 require_once VICMIC_ROOT . '/config/app.php';
 

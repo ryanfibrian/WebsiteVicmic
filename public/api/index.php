@@ -6,8 +6,12 @@
  * Registers routes and dispatches to controllers.
  */
 
-// Define app root (one level above public/)
-define('VICMIC_ROOT', dirname(__DIR__));
+// Auto-detect deployment structure (cPanel vs Local)
+if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+    define('VICMIC_ROOT', dirname(__DIR__));
+} else {
+    define('VICMIC_ROOT', dirname(__DIR__, 2) . '/vicmic_core');
+}
 
 // Composer autoloader
 require_once VICMIC_ROOT . '/vendor/autoload.php';
