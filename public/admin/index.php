@@ -61,13 +61,13 @@ session_start();
         </div>
     </main>
 
-    <script src="/assets/js/api-client.js"></script>
-    <script src="/assets/js/router.js"></script>
-    <script src="/assets/js/admin/dashboard.js"></script>
-    <script src="/assets/js/admin/products.js"></script>
-    <script src="/assets/js/admin/orders.js"></script>
-    <script src="/assets/js/admin/inventory.js"></script>
-    <script src="/assets/js/admin/serial-numbers.js"></script>
-    <script src="/assets/js/admin/app.js"></script>
+    <script src="/assets/js/api-client.js?v=2"></script>
+    <script src="/assets/js/router.js?v=2"></script>
+    <script src="/assets/js/admin/dashboard.js?v=2"></script>
+    <script src="/assets/js/admin/products.js?v=2"></script>
+    <script src="/assets/js/admin/orders.js?v=2"></script>
+    <script src="/assets/js/admin/inventory.js?v=2"></script>
+    <script src="/assets/js/admin/serial-numbers.js?v=2"></script>
+    <script src="/assets/js/admin/app.js?v=2"></script>
 </body>
 </html>
