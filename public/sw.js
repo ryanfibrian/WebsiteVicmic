@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vicmic-v1';
+const CACHE_NAME = 'vicmic-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.php',
