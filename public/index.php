@@ -156,6 +156,7 @@ $v = time();
     <script src="/assets/js/pages/order-tracking.js?v=<?= $v ?>"></script>
     <script src="/assets/js/pages/warranty-check.js?v=<?= $v ?>"></script>
     <script src="/assets/js/pages/auth.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/pages/profile.js?v=<?= $v ?>"></script>
     <script src="/assets/js/app.js?v=<?= $v ?>"></script>
 
     <!-- Register Service Worker -->

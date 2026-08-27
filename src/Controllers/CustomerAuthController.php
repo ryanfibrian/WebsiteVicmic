@@ -55,6 +55,9 @@ class CustomerAuthController
         
         session_regenerate_id(true);
         
+        // Send welcome email
+        $this->sendWelcomeEmail($data['email'], $data['name']);
+        
         Response::created([
             'id' => $id,
             'name' => $data['name']
@@ -187,6 +190,56 @@ class CustomerAuthController
         $this->db->update('password_reset_tokens', ['used' => 1], ['id' => $resetToken['id']]);
         
         Response::success(null, 'Password berhasil diubah. Silakan login dengan password baru Anda.');
+    }
+
+    /**
+     * Send welcome email after registration
+     */
+    private function sendWelcomeEmail(string $to, string $name): void
+    {
+        $subject = 'Selamat Datang di Vicmic Indonesia!';
+        $loginUrl = config('APP_URL', 'https://vicmic.id') . '/login';
+        
+        $htmlBody = <<<HTML
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="font-family: 'Segoe UI', Arial, sans-serif; background: #f0fdf4; margin: 0; padding: 40px 20px;">
+    <div style="max-width: 500px; margin: 0 auto; background: #ffffff; border-radius: 16px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="color: #16a34a; margin: 0;">Vicmic Indonesia</h2>
+        </div>
+        <h3 style="color: #1e293b; margin-bottom: 10px;">Halo, {\$name}!</h3>
+        <p style="color: #64748b; line-height: 1.6;">
+            Selamat datang di Vicmic Indonesia! Pendaftaran akun Anda telah berhasil. 
+            Mulai sekarang Anda bisa menikmati kemudahan berbelanja laptop dan hardware IT dengan harga terbaik dan bergaransi resmi.
+        </p>
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{\$loginUrl}" style="display: inline-block; background: #16a34a; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 10px; font-weight: 600; font-size: 1rem;">
+                Mulai Belanja
+            </a>
+        </div>
+        <p style="color: #94a3b8; font-size: 0.85rem; line-height: 1.5;">
+            Jika Anda memiliki pertanyaan, jangan ragu untuk menghubungi tim support kami via WhatsApp atau email.
+        </p>
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+        <p style="color: #94a3b8; font-size: 0.8rem; text-align: center;">
+            © 2026 CV Vicmic Indonesia. All rights reserved.
+        </p>
+    </div>
+</body>
+</html>
+HTML;
+
+        $headers = [
+            'MIME-Version: 1.0',
+            'Content-type: text/html; charset=UTF-8',
+            'From: Vicmic Indonesia <noreply@vicmic.id>',
+            'Reply-To: info@vicmic.id',
+            'X-Mailer: PHP/' . phpversion()
+        ];
+
+        @mail($to, $subject, $htmlBody, implode("\r\n", $headers));
     }
 
     /**
