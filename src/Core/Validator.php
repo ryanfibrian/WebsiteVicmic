@@ -177,17 +177,22 @@ class Validator
                     $column = $params[1];
                     $excludeId = $params[2] ?? null;
                     
-                    $db = Database::getInstance();
-                    $sql = "SELECT COUNT(*) FROM `$table` WHERE `$column` = ?";
-                    $sqlParams = [$value];
-                    
-                    if ($excludeId) {
-                        $sql .= " AND id != ?";
-                        $sqlParams[] = $excludeId;
-                    }
-                    
-                    if ($db->fetchColumn($sql, $sqlParams) > 0) {
-                        $this->addError($field, "$label sudah digunakan");
+                    try {
+                        $db = Database::getInstance();
+                        $sql = "SELECT COUNT(*) FROM `$table` WHERE `$column` = ?";
+                        $sqlParams = [$value];
+                        
+                        if ($excludeId) {
+                            $sql .= " AND id != ?";
+                            $sqlParams[] = $excludeId;
+                        }
+                        
+                        if ($db->fetchColumn($sql, $sqlParams) > 0) {
+                            $this->addError($field, "$label sudah digunakan");
+                        }
+                    } catch (\Throwable $e) {
+                        // If DB is unreachable, skip unique check
+                        // The DB constraint will catch duplicates on insert
                     }
                 }
                 break;

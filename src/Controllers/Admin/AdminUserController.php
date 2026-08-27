@@ -57,7 +57,7 @@ class AdminUserController
         $data = $validator->validateOrFail();
         
         // Ensure unique username/email excluding this ID (simplified check)
-        $existing = $this->db->fetchRow("SELECT id FROM admin_users WHERE (username = ? OR email = ?) AND id != ?", [$data['username'], $data['email'], $id]);
+        $existing = $this->db->fetch("SELECT id FROM admin_users WHERE (username = ? OR email = ?) AND id != ?", [$data['username'], $data['email'], $id]);
         if ($existing) {
             Response::error('Username atau Email sudah digunakan oleh pengguna lain', 400);
             return;

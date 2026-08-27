@@ -109,6 +109,8 @@ $router->group('/api', function (Router $r) {
     $r->post('/auth/login', [CustomerAuthController::class, 'login']);
     $r->post('/auth/logout', [CustomerAuthController::class, 'logout']);
     $r->get('/auth/me', [CustomerAuthController::class, 'me']);
+    $r->post('/auth/forgot-password', [CustomerAuthController::class, 'forgotPassword']);
+    $r->post('/auth/reset-password', [CustomerAuthController::class, 'resetPassword']);
 });
 
 // ============================================================

@@ -21,7 +21,7 @@ class CustomerAdminController
     public function show(Request $request): void
     {
         $id = (int) $request->param('id');
-        $customer = $this->db->fetchRow("SELECT id, name, email, phone, is_active, last_login_at, created_at FROM customers WHERE id = ?", [$id]);
+        $customer = $this->db->fetch("SELECT id, name, email, phone, is_active, last_login_at, created_at FROM customers WHERE id = ?", [$id]);
         
         if (!$customer) {
             Response::notFound('Pelanggan tidak ditemukan');
@@ -69,7 +69,7 @@ class CustomerAdminController
         
         $data = $validator->validateOrFail();
         
-        $existing = $this->db->fetchRow("SELECT id FROM customers WHERE email = ? AND id != ?", [$data['email'], $id]);
+        $existing = $this->db->fetch("SELECT id FROM customers WHERE email = ? AND id != ?", [$data['email'], $id]);
         if ($existing) {
             Response::error('Email sudah digunakan oleh pelanggan lain', 400);
             return;
