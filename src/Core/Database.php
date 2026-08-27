@@ -78,6 +78,14 @@ class Database
     }
 
     /**
+     * Fetch single row (alias for fetch)
+     */
+    public function fetchRow(string $sql, array $params = []): ?array
+    {
+        return $this->fetch($sql, $params);
+    }
+
+    /**
      * Fetch single column value
      */
     public function fetchColumn(string $sql, array $params = []): mixed
