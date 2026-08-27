@@ -105,8 +105,10 @@ class Validator
 
             case 'min':
                 $min = (int) ($params[0] ?? 0);
-                if (is_string($value) && mb_strlen($value) < $min) {
-                    $this->addError($field, "$label minimal $min karakter");
+                if (is_string($value)) {
+                    if (mb_strlen($value) < $min) {
+                        $this->addError($field, "$label minimal $min karakter");
+                    }
                 } elseif (is_numeric($value) && $value < $min) {
                     $this->addError($field, "$label minimal bernilai $min");
                 }
@@ -114,8 +116,10 @@ class Validator
 
             case 'max':
                 $max = (int) ($params[0] ?? 0);
-                if (is_string($value) && mb_strlen($value) > $max) {
-                    $this->addError($field, "$label maksimal $max karakter");
+                if (is_string($value)) {
+                    if (mb_strlen($value) > $max) {
+                        $this->addError($field, "$label maksimal $max karakter");
+                    }
                 } elseif (is_numeric($value) && $value > $max) {
                     $this->addError($field, "$label maksimal bernilai $max");
                 }
