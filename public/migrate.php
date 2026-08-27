@@ -3,7 +3,7 @@
  * Run database migrations
  */
 session_start();
-if (!isset($_SESSION['admin'])) {
+if (!isset($_SESSION['admin_user'])) {
     die("Unauthorized. Please login to admin panel first.");
 }
 
