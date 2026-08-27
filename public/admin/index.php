@@ -20,8 +20,8 @@ $v = time();
 </head>
 <body>
     <aside class="sidebar">
-        <div class="sidebar-header">
-            VICMIC Admin
+        <div class="sidebar-header" style="padding: 20px;">
+            <img src="/assets/img/logo.png" alt="Vicmic Logo" style="width: 100%; height: auto; max-height: 40px; object-fit: contain;">
         </div>
         <nav class="sidebar-nav">
             <a href="/admin/" data-link class="nav-item active">

@@ -51,7 +51,7 @@ $v = time();
     <header class="site-header" id="site-header">
         <div class="header-inner">
             <a href="/" class="header-logo" data-link>
-                <span class="logo-text">VICMIC</span>
+                <img src="/assets/img/logo.png" alt="Vicmic Logo" style="height: 40px; width: auto; object-fit: contain;">
             </a>
 
             <div class="header-search">
@@ -106,7 +106,9 @@ $v = time();
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="footer-logo">VICMIC Indonesia</div>
+                    <div class="footer-logo">
+                        <img src="/assets/img/logo.png" alt="Vicmic Logo" style="height: 50px; width: auto; object-fit: contain; filter: brightness(0) invert(1);">
+                    </div>
                     <p>Mitra resmi ASUS, Acer, HP, Lenovo, MSI & Apple. Melayani penjualan retail & wholesale laptop dan hardware IT sejak 2010.</p>
                 </div>
                 <div class="footer-col">
