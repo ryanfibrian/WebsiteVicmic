@@ -14,44 +14,9 @@ if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
 echo "<h2>Vicmic Diagnostik</h2>";
 echo "<pre>";
 
-// 0. Show all paths for debugging
-echo "0. Debug Paths:\n";
-echo "   __DIR__         : " . __DIR__ . "\n";
-echo "   dirname(__DIR__): " . dirname(__DIR__) . "\n";
-echo "   dirname(2)      : " . dirname(__DIR__, 2) . "\n\n";
-
-// 0b. List directories in parent
-echo "0b. Isi direktori parent (" . dirname(__DIR__) . "):\n";
-$parentDir = dirname(__DIR__);
-if (is_dir($parentDir)) {
-    $items = scandir($parentDir);
-    foreach ($items as $item) {
-        if ($item === '.' || $item === '..') continue;
-        $fullPath = $parentDir . '/' . $item;
-        $type = is_dir($fullPath) ? '[DIR]' : '[FILE]';
-        echo "   $type $item\n";
-    }
-}
-echo "\n";
-
 // 1. Check VICMIC_ROOT
 echo "1. VICMIC_ROOT: " . VICMIC_ROOT . "\n";
 echo "   Exists: " . (is_dir(VICMIC_ROOT) ? "✅ Ya" : "❌ Tidak") . "\n\n";
-
-// 1b. If VICMIC_ROOT doesn't exist, try to find it
-if (!is_dir(VICMIC_ROOT)) {
-    echo "1b. Mencari folder vicmic_core...\n";
-    // Check common locations
-    $possiblePaths = [
-        dirname(__DIR__) . '/vicmic_core',
-        dirname(__DIR__, 2) . '/vicmic_core',
-        '/home/' . get_current_user() . '/vicmic_core',
-    ];
-    foreach ($possiblePaths as $path) {
-        echo "   Cek: $path => " . (is_dir($path) ? "✅ DITEMUKAN!" : "❌ Tidak ada") . "\n";
-    }
-    echo "\n";
-}
 
 // 2. Check autoloader
 $autoloadPath = VICMIC_ROOT . '/vendor/autoload.php';
@@ -64,8 +29,7 @@ echo "3. Config: " . $configPath . "\n";
 echo "   Exists: " . (file_exists($configPath) ? "✅ Ya" : "❌ Tidak") . "\n\n";
 
 if (!file_exists($autoloadPath) || !file_exists($configPath)) {
-    echo "❌ GAGAL: File inti tidak ditemukan. Periksa deployment.\n";
-    echo "   Coba cek apakah folder vicmic_core ada di cPanel File Manager.\n";
+    echo "❌ GAGAL: File inti tidak ditemukan.\n";
     echo "</pre>";
     exit;
 }
@@ -97,41 +61,33 @@ try {
     echo "   ❌ Tabel belum ada atau error: " . $e->getMessage() . "\n\n";
 }
 
-// 6. Create/Reset admin user
-echo "6. Membuat/reset akun admin...\n";
+// 6. Reset admin password using correct Database method
+echo "6. Reset password admin...\n";
 try {
-    // Hapus admin lama jika ada
-    $db->execute("DELETE FROM admin_users WHERE username = 'admin'");
-    
     // Buat password hash yang benar untuk 'password123'
     $hash = password_hash('password123', PASSWORD_BCRYPT, ['cost' => 10]);
     
-    $db->insert('admin_users', [
-        'username'      => 'admin',
-        'email'         => 'admin@vicmic.id',
-        'password_hash' => $hash,
-        'full_name'     => 'Super Admin',
-        'role'          => 'super_admin',
-        'is_active'     => 1,
-    ]);
+    // Update password menggunakan method query() yang benar
+    $db->query("UPDATE admin_users SET password_hash = ? WHERE username = 'admin'", [$hash]);
     
-    echo "   ✅ Akun admin berhasil dibuat!\n";
+    echo "   ✅ Password admin berhasil di-reset!\n";
     echo "   Username: admin\n";
-    echo "   Password: password123\n";
-    echo "   Hash: $hash\n\n";
+    echo "   Password: password123\n\n";
     
-    // Verify it was created
+    // Verify
     $verify = $db->fetch("SELECT id, username, password_hash FROM admin_users WHERE username = 'admin'");
     if ($verify) {
         $testVerify = password_verify('password123', $verify['password_hash']);
         echo "   Verifikasi password_verify('password123'): " . ($testVerify ? "✅ COCOK" : "❌ TIDAK COCOK") . "\n";
+    } else {
+        echo "   ❌ User admin tidak ditemukan di database!\n";
     }
 } catch (\Throwable $e) {
-    echo "   ❌ Gagal membuat admin: " . $e->getMessage() . "\n";
+    echo "   ❌ Gagal reset password: " . $e->getMessage() . "\n";
 }
 
 // 7. Check JWT Secret
-echo "\n7. JWT Secret: " . (config('JWT_SECRET') ? "✅ Tersedia" : "❌ Kosong (Login akan gagal!)") . "\n";
+echo "\n7. JWT Secret: " . (config('JWT_SECRET') ? "✅ Tersedia (" . substr(config('JWT_SECRET'), 0, 10) . "...)" : "❌ Kosong") . "\n";
 
 echo "\n========================================\n";
 echo "⚠️  HAPUS FILE INI SETELAH SELESAI!  ⚠️\n";

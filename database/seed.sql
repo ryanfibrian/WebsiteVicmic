@@ -1,4 +1,4 @@
-INSERT INTO admin_users (username, password, name, email, role, is_active) VALUES
+INSERT INTO admin_users (username, password_hash, full_name, email, role, is_active) VALUES
 ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Super Admin', 'admin@vicmic.id', 'super_admin', 1);
 
 INSERT INTO categories (slug, name, parent_id) VALUES
