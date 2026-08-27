@@ -2,9 +2,8 @@
 /**
  * Run database migrations
  */
-session_start();
-if (!isset($_SESSION['admin_user'])) {
-    die("Unauthorized. Please login to admin panel first.");
+if (!isset($_GET['key']) || $_GET['key'] !== 'vicmic123') {
+    die("Unauthorized. Please provide the correct key.");
 }
 
 require_once __DIR__ . '/../src/Core/Database.php';
