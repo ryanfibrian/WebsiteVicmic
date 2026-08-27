@@ -50,7 +50,8 @@ class CustomerAuthController
         $_SESSION['customer'] = [
             'id' => $id,
             'name' => $data['name'],
-            'email' => $data['email']
+            'email' => $data['email'],
+            'phone' => $data['phone'] ?? null
         ];
         
         session_regenerate_id(true);
@@ -73,7 +74,7 @@ class CustomerAuthController
         
         $data = $validator->validateOrFail();
         
-        $customer = $this->db->fetch("SELECT id, name, email, password_hash, is_active FROM customers WHERE email = ?", [$data['email']]);
+        $customer = $this->db->fetch("SELECT id, name, email, phone, password_hash, is_active FROM customers WHERE email = ?", [$data['email']]);
         
         if (!$customer || !password_verify($data['password'], $customer['password_hash'])) {
             Response::error('Email atau password salah', 401);
@@ -92,7 +93,8 @@ class CustomerAuthController
         $_SESSION['customer'] = [
             'id' => $customer['id'],
             'name' => $customer['name'],
-            'email' => $customer['email']
+            'email' => $customer['email'],
+            'phone' => $customer['phone']
         ];
         
         session_regenerate_id(true);

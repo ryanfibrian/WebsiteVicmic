@@ -241,18 +241,20 @@ window.PageProfile = {
                 </div>
                 <div class="form-group">
                     <label>Nomor Handphone</label>
-                    <input type="tel" id="prof-phone" class="form-control" value="${user.phone || ''}">
+                    <input type="tel" id="prof-phone" class="form-control" value="${user.phone || ''}" autocomplete="tel">
                 </div>
                 <div class="form-group">
                     <label>Email (Tidak dapat diubah)</label>
-                    <input type="email" class="form-control" value="${user.email}" disabled style="background:#f1f5f9;">
+                    <input type="email" class="form-control" value="${user.email}" disabled style="background:#f1f5f9;" autocomplete="email">
                 </div>
                 
                 <h3 style="margin: 30px 0 15px;">Ubah Password</h3>
                 <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 20px;">Biarkan kosong jika tidak ingin mengubah password.</p>
+                <!-- Hidden dummy username input to prevent browser autofill on phone field -->
+                <input type="text" style="display:none" autocomplete="username">
                 <div class="form-group">
                     <label>Password Baru</label>
-                    <input type="password" id="prof-pass" class="form-control" placeholder="Minimal 6 karakter">
+                    <input type="password" id="prof-pass" class="form-control" placeholder="Minimal 6 karakter" autocomplete="new-password">
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
