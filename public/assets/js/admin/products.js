@@ -1,7 +1,7 @@
 /**
  * Admin Products Page
  */
-const AdminProducts = {
+window.AdminProducts = {
     async render() {
         const app = document.getElementById('admin-app');
         app.innerHTML = `

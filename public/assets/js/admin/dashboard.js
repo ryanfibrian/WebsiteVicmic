@@ -1,7 +1,7 @@
 /**
  * Admin Dashboard Page
  */
-const AdminDashboard = {
+window.AdminDashboard = {
     async render() {
         const app = document.getElementById('admin-app');
         

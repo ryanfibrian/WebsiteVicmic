@@ -1,7 +1,7 @@
 /**
  * Admin Warehouses Page
  */
-const AdminWarehouses = {
+window.AdminWarehouses = {
     async render() {
         const app = document.getElementById('admin-app');
         

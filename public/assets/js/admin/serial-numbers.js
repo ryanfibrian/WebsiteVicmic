@@ -1,7 +1,7 @@
 /**
  * Admin Serial Numbers Page
  */
-const AdminSerialNumbers = {
+window.AdminSerialNumbers = {
     async render() {
         const app = document.getElementById('admin-app');
         

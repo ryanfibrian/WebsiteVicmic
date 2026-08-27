@@ -1,7 +1,7 @@
 /**
  * Admin Orders Page
  */
-const AdminOrders = {
+window.AdminOrders = {
     async render() {
         const app = document.getElementById('admin-app');
         

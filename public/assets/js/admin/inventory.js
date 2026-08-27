@@ -1,7 +1,7 @@
 /**
  * Admin Inventory Page
  */
-const AdminInventory = {
+window.AdminInventory = {
     async render() {
         const app = document.getElementById('admin-app');
         
