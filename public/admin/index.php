@@ -68,6 +68,7 @@ session_start();
     <script src="/assets/js/admin/orders.js?v=2"></script>
     <script src="/assets/js/admin/inventory.js?v=2"></script>
     <script src="/assets/js/admin/serial-numbers.js?v=2"></script>
+    <script src="/assets/js/admin/warehouses.js?v=2"></script>
     <script src="/assets/js/admin/app.js?v=2"></script>
 </body>
 </html>
