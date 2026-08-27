@@ -6,6 +6,13 @@ if (!isset($_GET['key']) || $_GET['key'] !== 'vicmic123') {
     die("Unauthorized. Please provide the correct key.");
 }
 
+// Auto-detect deployment structure
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    define('VICMIC_ROOT', dirname(__DIR__));
+} else {
+    define('VICMIC_ROOT', dirname(__DIR__) . '/vicmic_core');
+}
+
 require_once __DIR__ . '/../src/Core/Database.php';
 
 use Vicmic\Core\Database;
