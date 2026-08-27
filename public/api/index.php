@@ -41,6 +41,7 @@ use Vicmic\Controllers\CheckoutController;
 use Vicmic\Controllers\OrderController;
 use Vicmic\Controllers\ShippingController;
 use Vicmic\Controllers\WarrantyController;
+use Vicmic\Controllers\CustomerAuthController;
 
 // Controllers — Admin
 use Vicmic\Controllers\Admin\AuthController;
@@ -102,6 +103,12 @@ $router->group('/api', function (Router $r) {
 
     // Settings (public subset)
     $r->get('/settings/public', [SettingsController::class, 'publicSettings']);
+
+    // Customer Auth
+    $r->post('/auth/register', [CustomerAuthController::class, 'register']);
+    $r->post('/auth/login', [CustomerAuthController::class, 'login']);
+    $r->post('/auth/logout', [CustomerAuthController::class, 'logout']);
+    $r->get('/auth/me', [CustomerAuthController::class, 'me']);
 });
 
 // ============================================================
