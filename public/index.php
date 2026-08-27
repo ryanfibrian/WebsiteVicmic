@@ -10,6 +10,9 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 } else {
     define('VICMIC_ROOT', dirname(__DIR__) . '/vicmic_core');
 }
+
+// Cache buster for assets
+$v = time();
 ?> 
 <!DOCTYPE html>
 <html lang="id">
@@ -34,7 +37,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="/assets/css/storefront.css">
+    <link rel="stylesheet" href="/assets/css/storefront.css?v=<?= $v ?>">
 
     <!-- Open Graph -->
     <meta property="og:title" content="Vicmic Indonesia — Laptop & IT Hardware Terpercaya">
@@ -139,18 +142,18 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     </footer>
 
     <!-- SPA Scripts -->
-    <script src="/assets/js/api-client.js"></script>
-    <script src="/assets/js/router.js"></script>
-    <script src="/assets/js/components/header.js"></script>
-    <script src="/assets/js/components/product-card.js"></script>
-    <script src="/assets/js/components/cart.js"></script>
-    <script src="/assets/js/pages/home.js"></script>
-    <script src="/assets/js/pages/catalog.js"></script>
-    <script src="/assets/js/pages/product-detail.js"></script>
-    <script src="/assets/js/pages/checkout.js"></script>
-    <script src="/assets/js/pages/order-tracking.js"></script>
-    <script src="/assets/js/pages/warranty-check.js"></script>
-    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/api-client.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/router.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/components/header.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/components/product-card.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/components/cart.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/pages/home.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/pages/catalog.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/pages/product-detail.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/pages/checkout.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/pages/order-tracking.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/pages/warranty-check.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/app.js?v=<?= $v ?>"></script>
 
     <!-- Register Service Worker -->
     <script>

@@ -5,6 +5,9 @@
 session_start();
 // Simple auth check for admin panel (assuming auth sets $_SESSION['admin'])
 // For now, we'll just allow it to load the UI for development.
+
+// Helper to bypass browser cache
+$v = time();
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -13,7 +16,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vicmic Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/admin.css">
+    <link rel="stylesheet" href="/assets/css/admin.css?v=<?= $v ?>">
 </head>
 <body>
     <aside class="sidebar">
@@ -61,14 +64,14 @@ session_start();
         </div>
     </main>
 
-    <script src="/assets/js/api-client.js?v=2"></script>
-    <script src="/assets/js/router.js?v=2"></script>
-    <script src="/assets/js/admin/dashboard.js?v=2"></script>
-    <script src="/assets/js/admin/products.js?v=2"></script>
-    <script src="/assets/js/admin/orders.js?v=2"></script>
-    <script src="/assets/js/admin/inventory.js?v=2"></script>
-    <script src="/assets/js/admin/serial-numbers.js?v=2"></script>
-    <script src="/assets/js/admin/warehouses.js?v=2"></script>
-    <script src="/assets/js/admin/app.js?v=2"></script>
+    <script src="/assets/js/api-client.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/router.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/admin/dashboard.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/admin/products.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/admin/orders.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/admin/inventory.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/admin/serial-numbers.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/admin/warehouses.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/admin/app.js?v=<?= $v ?>"></script>
 </body>
 </html>
