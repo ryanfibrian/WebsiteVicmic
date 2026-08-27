@@ -13,6 +13,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     define('VICMIC_ROOT', dirname(__DIR__) . '/vicmic_core');
 }
 
+require_once __DIR__ . '/../config/app.php';
 require_once __DIR__ . '/../src/Core/Database.php';
 
 use Vicmic\Core\Database;
