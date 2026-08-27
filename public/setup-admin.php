@@ -8,15 +8,50 @@
 if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
     define('VICMIC_ROOT', dirname(__DIR__));
 } else {
-    define('VICMIC_ROOT', dirname(__DIR__, 2) . '/vicmic_core');
+    define('VICMIC_ROOT', dirname(__DIR__) . '/vicmic_core');
 }
 
 echo "<h2>Vicmic Diagnostik</h2>";
 echo "<pre>";
 
+// 0. Show all paths for debugging
+echo "0. Debug Paths:\n";
+echo "   __DIR__         : " . __DIR__ . "\n";
+echo "   dirname(__DIR__): " . dirname(__DIR__) . "\n";
+echo "   dirname(2)      : " . dirname(__DIR__, 2) . "\n\n";
+
+// 0b. List directories in parent
+echo "0b. Isi direktori parent (" . dirname(__DIR__) . "):\n";
+$parentDir = dirname(__DIR__);
+if (is_dir($parentDir)) {
+    $items = scandir($parentDir);
+    foreach ($items as $item) {
+        if ($item === '.' || $item === '..') continue;
+        $fullPath = $parentDir . '/' . $item;
+        $type = is_dir($fullPath) ? '[DIR]' : '[FILE]';
+        echo "   $type $item\n";
+    }
+}
+echo "\n";
+
 // 1. Check VICMIC_ROOT
 echo "1. VICMIC_ROOT: " . VICMIC_ROOT . "\n";
 echo "   Exists: " . (is_dir(VICMIC_ROOT) ? "✅ Ya" : "❌ Tidak") . "\n\n";
+
+// 1b. If VICMIC_ROOT doesn't exist, try to find it
+if (!is_dir(VICMIC_ROOT)) {
+    echo "1b. Mencari folder vicmic_core...\n";
+    // Check common locations
+    $possiblePaths = [
+        dirname(__DIR__) . '/vicmic_core',
+        dirname(__DIR__, 2) . '/vicmic_core',
+        '/home/' . get_current_user() . '/vicmic_core',
+    ];
+    foreach ($possiblePaths as $path) {
+        echo "   Cek: $path => " . (is_dir($path) ? "✅ DITEMUKAN!" : "❌ Tidak ada") . "\n";
+    }
+    echo "\n";
+}
 
 // 2. Check autoloader
 $autoloadPath = VICMIC_ROOT . '/vendor/autoload.php';
@@ -30,6 +65,7 @@ echo "   Exists: " . (file_exists($configPath) ? "✅ Ya" : "❌ Tidak") . "\n\n
 
 if (!file_exists($autoloadPath) || !file_exists($configPath)) {
     echo "❌ GAGAL: File inti tidak ditemukan. Periksa deployment.\n";
+    echo "   Coba cek apakah folder vicmic_core ada di cPanel File Manager.\n";
     echo "</pre>";
     exit;
 }
