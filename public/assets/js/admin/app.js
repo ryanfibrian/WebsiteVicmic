@@ -131,6 +131,8 @@ const AdminApp = {
         router.route('/admin/inventory', () => this.loadPage('AdminInventory'));
         router.route('/admin/serial-numbers', () => this.loadPage('AdminSerialNumbers'));
         router.route('/admin/warehouses', () => this.loadPage('AdminWarehouses'));
+        router.route('/admin/users', () => this.loadPage('AdminUsers'));
+        router.route('/admin/customers', () => this.loadPage('AdminCustomers'));
         
         this.highlightNav();
         

@@ -42,6 +42,15 @@ $v = time();
             <a href="/admin/warehouses" data-link class="nav-item">
                 <span class="nav-icon">🏭</span> Warehouses
             </a>
+            
+            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin: 20px 20px 10px; font-weight: 600;">Pengguna</div>
+            
+            <a href="/admin/customers" data-link class="nav-item">
+                <span class="nav-icon">👥</span> Pelanggan
+            </a>
+            <a href="/admin/users" data-link class="nav-item">
+                <span class="nav-icon">🛡️</span> Admin
+            </a>
         </nav>
     </aside>
     
@@ -72,6 +81,8 @@ $v = time();
     <script src="/assets/js/admin/inventory.js?v=<?= $v ?>"></script>
     <script src="/assets/js/admin/serial-numbers.js?v=<?= $v ?>"></script>
     <script src="/assets/js/admin/warehouses.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/admin/users.js?v=<?= $v ?>"></script>
+    <script src="/assets/js/admin/customers.js?v=<?= $v ?>"></script>
     <script src="/assets/js/admin/app.js?v=<?= $v ?>"></script>
 </body>
 </html>

@@ -59,7 +59,9 @@ class ProductAdminController
         // Handle optional fields
         $optional = ['short_description', 'processor', 'ram_capacity', 'storage_type', 'gpu', 
                      'display_specs', 'os', 'weight_grams', 'sale_price', 'warranty_period_months',
-                     'images', 'specifications', 'meta_title', 'meta_description', 'is_featured', 'is_published'];
+                     'images', 'specifications', 'meta_title', 'meta_description', 'is_featured', 'is_published',
+                     'condition', 'length_cm', 'width_cm', 'height_cm', 'is_preorder', 'preorder_days',
+                     'is_insurance_required', 'discount_percentage'];
         
         foreach ($optional as $field) {
             $value = $request->input($field);

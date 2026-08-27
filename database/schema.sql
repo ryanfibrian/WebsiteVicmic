@@ -103,6 +103,14 @@ CREATE TABLE IF NOT EXISTS `products` (
     `is_featured` BOOLEAN DEFAULT FALSE,
     `is_published` BOOLEAN DEFAULT TRUE,
     `view_count` INT DEFAULT 0,
+    `condition` ENUM('baru', 'bekas') DEFAULT 'baru',
+    `length_cm` INT NULL,
+    `width_cm` INT NULL,
+    `height_cm` INT NULL,
+    `is_preorder` BOOLEAN DEFAULT FALSE,
+    `preorder_days` INT NULL,
+    `is_insurance_required` BOOLEAN DEFAULT FALSE,
+    `discount_percentage` INT DEFAULT 0,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON DELETE SET NULL,
@@ -312,6 +320,46 @@ CREATE TABLE IF NOT EXISTS `shipping_cities` (
     FOREIGN KEY (`province_id`) REFERENCES `shipping_provinces`(`id`),
     INDEX `idx_city_province` (`province_id`),
     INDEX `idx_city_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Customers (Storefront Users)
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `customers` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(150) NOT NULL,
+    `email` VARCHAR(150) UNIQUE NOT NULL,
+    `phone` VARCHAR(50) NULL,
+    `password_hash` VARCHAR(255) NOT NULL,
+    `is_active` BOOLEAN DEFAULT TRUE,
+    `last_login_at` DATETIME NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX `idx_customer_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+-- Customer Addresses
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `customer_addresses` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `customer_id` INT NOT NULL,
+    `label` VARCHAR(50) NOT NULL COMMENT 'e.g., Rumah, Kantor',
+    `recipient_name` VARCHAR(150) NOT NULL,
+    `phone` VARCHAR(50) NOT NULL,
+    `address` TEXT NOT NULL,
+    `city_id` INT NOT NULL,
+    `city_name` VARCHAR(100) NULL,
+    `district_id` INT NOT NULL,
+    `province_name` VARCHAR(100) NULL,
+    `postal_code` VARCHAR(10) NULL,
+    `latitude` DECIMAL(10, 8) NULL,
+    `longitude` DECIMAL(11, 8) NULL,
+    `is_default` BOOLEAN DEFAULT FALSE,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`customer_id`) REFERENCES `customers`(`id`) ON DELETE CASCADE,
+    INDEX `idx_customer_id` (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------

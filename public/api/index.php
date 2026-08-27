@@ -53,6 +53,8 @@ use Vicmic\Controllers\Admin\WarehouseController;
 use Vicmic\Controllers\Admin\MediaStudioController;
 use Vicmic\Controllers\Admin\SearchController;
 use Vicmic\Controllers\Admin\SettingsController;
+use Vicmic\Controllers\Admin\AdminUserController;
+use Vicmic\Controllers\Admin\CustomerAdminController;
 
 // Create router and request
 $router = new Router();
@@ -169,10 +171,17 @@ $router->group('/api/admin', function (Router $r) {
     $r->put('/settings', [SettingsController::class, 'update'], [AuthMiddleware::role('super_admin')]);
 
     // Admin Users Management
-    $r->get('/users', [AuthController::class, 'listUsers'], [AuthMiddleware::role('super_admin')]);
-    $r->post('/users', [AuthController::class, 'createUser'], [AuthMiddleware::role('super_admin')]);
-    $r->put('/users/:id', [AuthController::class, 'updateUser'], [AuthMiddleware::role('super_admin')]);
+    $r->get('/users', [AdminUserController::class, 'index'], [AuthMiddleware::role('super_admin')]);
+    $r->post('/users', [AdminUserController::class, 'store'], [AuthMiddleware::role('super_admin')]);
+    $r->put('/users/:id', [AdminUserController::class, 'update'], [AuthMiddleware::role('super_admin')]);
+    $r->delete('/users/:id', [AdminUserController::class, 'destroy'], [AuthMiddleware::role('super_admin')]);
 
+    // Customer Management
+    $r->get('/customers', [CustomerAdminController::class, 'index'], [AuthMiddleware::auth()]);
+    $r->get('/customers/:id', [CustomerAdminController::class, 'show'], [AuthMiddleware::auth()]);
+    $r->post('/customers', [CustomerAdminController::class, 'store'], [AuthMiddleware::role('admin')]);
+    $r->put('/customers/:id', [CustomerAdminController::class, 'update'], [AuthMiddleware::role('admin')]);
+    $r->delete('/customers/:id', [CustomerAdminController::class, 'destroy'], [AuthMiddleware::role('admin')]);
 });
 
 // ============================================================
