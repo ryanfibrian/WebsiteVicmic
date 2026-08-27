@@ -74,8 +74,9 @@ const HomePage = {
 
         // Fetch Data
         try {
+            const preferredCategory = localStorage.getItem('vicmic_preferred_category') || '';
             const [featuredRes, categoriesRes] = await Promise.all([
-                API.get('/products/featured', { limit: 8 }),
+                API.get('/products/featured', { limit: 8, preferred_category: preferredCategory }),
                 API.get('/products/categories')
             ]);
 

@@ -32,7 +32,8 @@ class ProductController
     public function featured(Request $request): void
     {
         $limit = (int) $request->query('limit', 8);
-        Response::success($this->model->getFeatured($limit));
+        $preferredCategory = $request->query('preferred_category', null);
+        Response::success($this->model->getFeatured($limit, $preferredCategory));
     }
 
     public function search(Request $request): void

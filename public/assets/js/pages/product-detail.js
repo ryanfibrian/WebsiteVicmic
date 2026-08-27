@@ -35,8 +35,13 @@ const ProductDetailPage = {
             const res = await API.get(`/products/${slug}`);
             this.renderProduct(res.data);
             
+            if (res.data && res.data.category_slug) {
+                localStorage.setItem('vicmic_preferred_category', res.data.category_slug);
+            }
+            
             // Load related products (featured as fallback for now)
-            const relatedRes = await API.get('/products/featured', { limit: 4 });
+            const preferredCategory = localStorage.getItem('vicmic_preferred_category') || '';
+            const relatedRes = await API.get('/products/featured', { limit: 4, preferred_category: preferredCategory });
             ProductCard.renderList(relatedRes.data, 'related-products');
         } catch (e) {
             document.getElementById('product-skeleton').style.display = 'none';

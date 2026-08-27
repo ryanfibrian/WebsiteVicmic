@@ -162,21 +162,58 @@ class Product
     }
 
     /**
-     * Get featured products
+     * Get featured products with optional smart recommendations
      */
-    public function getFeatured(int $limit = 8): array
+    public function getFeatured(int $limit = 8, ?string $preferredCategory = null): array
     {
-        $items = $this->db->fetchAll(
-            "SELECT p.*, c.name as category_name,
-                COALESCE(p.sale_price, p.base_price) as effective_price,
-                (SELECT COALESCE(SUM(ps.quantity - ps.reserved_quantity), 0) FROM product_stocks ps WHERE ps.product_id = p.id) as total_stock
-             FROM products p
-             LEFT JOIN categories c ON p.category_id = c.id
-             WHERE p.is_published = 1 AND p.is_featured = 1
-             ORDER BY p.created_at DESC
-             LIMIT ?",
-            [$limit]
-        );
+        $items = [];
+        
+        // Try to fetch half of the limit from preferred category first
+        if ($preferredCategory) {
+            $prefLimit = (int) ceil($limit / 2);
+            $items = $this->db->fetchAll(
+                "SELECT p.*, c.name as category_name,
+                    COALESCE(p.sale_price, p.base_price) as effective_price,
+                    (SELECT COALESCE(SUM(ps.quantity - ps.reserved_quantity), 0) FROM product_stocks ps WHERE ps.product_id = p.id) as total_stock
+                 FROM products p
+                 LEFT JOIN categories c ON p.category_id = c.id
+                 WHERE p.is_published = 1 AND p.is_featured = 1 AND c.slug = ?
+                 ORDER BY p.created_at DESC
+                 LIMIT ?",
+                [$preferredCategory, $prefLimit]
+            );
+        }
+        
+        // Fetch the remaining slots normally (excluding already fetched items)
+        $remainingLimit = $limit - count($items);
+        if ($remainingLimit > 0) {
+            $excludeIds = array_column($items, 'id');
+            
+            $where = "p.is_published = 1 AND p.is_featured = 1";
+            $params = [];
+            
+            if (!empty($excludeIds)) {
+                $placeholders = implode(',', array_fill(0, count($excludeIds), '?'));
+                $where .= " AND p.id NOT IN ($placeholders)";
+                $params = array_merge($params, $excludeIds);
+            }
+            
+            $params[] = $remainingLimit;
+            
+            $otherItems = $this->db->fetchAll(
+                "SELECT p.*, c.name as category_name,
+                    COALESCE(p.sale_price, p.base_price) as effective_price,
+                    (SELECT COALESCE(SUM(ps.quantity - ps.reserved_quantity), 0) FROM product_stocks ps WHERE ps.product_id = p.id) as total_stock
+                 FROM products p
+                 LEFT JOIN categories c ON p.category_id = c.id
+                 WHERE $where
+                 ORDER BY p.created_at DESC
+                 LIMIT ?",
+                $params
+            );
+            
+            $items = array_merge($items, $otherItems);
+        }
 
         foreach ($items as &$item) {
             $item['images'] = json_decode($item['images'] ?? '[]', true);

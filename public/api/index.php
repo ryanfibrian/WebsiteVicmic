@@ -42,6 +42,7 @@ use Vicmic\Controllers\OrderController;
 use Vicmic\Controllers\ShippingController;
 use Vicmic\Controllers\WarrantyController;
 use Vicmic\Controllers\CustomerAuthController;
+use Vicmic\Controllers\CustomerProfileController;
 
 // Controllers — Admin
 use Vicmic\Controllers\Admin\AuthController;
@@ -111,6 +112,14 @@ $router->group('/api', function (Router $r) {
     $r->get('/auth/me', [CustomerAuthController::class, 'me']);
     $r->post('/auth/forgot-password', [CustomerAuthController::class, 'forgotPassword']);
     $r->post('/auth/reset-password', [CustomerAuthController::class, 'resetPassword']);
+
+    // Customer Profile & Data
+    $r->put('/auth/profile', [CustomerProfileController::class, 'updateProfile']);
+    $r->get('/customer/addresses', [CustomerProfileController::class, 'getAddresses']);
+    $r->post('/customer/addresses', [CustomerProfileController::class, 'addAddress']);
+    $r->put('/customer/addresses/:id', [CustomerProfileController::class, 'updateAddress']);
+    $r->delete('/customer/addresses/:id', [CustomerProfileController::class, 'deleteAddress']);
+    $r->get('/customer/orders', [CustomerProfileController::class, 'getOrders']);
 });
 
 // ============================================================
