@@ -60,10 +60,36 @@ $v = time();
                 <input type="text" class="form-control" placeholder="Cari..." style="width: 300px; background: rgba(0,0,0,0.2); border: none;">
             </div>
             <div class="topbar-user" style="display: flex; align-items: center; gap: 15px;">
-                <span style="font-weight: 500;">Admin User</span>
-                <div style="width: 35px; height: 35px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff;">A</div>
+                <span style="font-weight: 500;" id="admin-user-name">Admin User</span>
+                <div id="admin-user-avatar" style="width: 35px; height: 35px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff;">A</div>
+                <button onclick="adminLogout()" class="btn btn-danger btn-sm" style="padding: 5px 10px; font-size: 0.8rem; margin-left: 10px;">Logout</button>
             </div>
         </header>
+
+        <script>
+            function adminLogout() {
+                if (confirm('Yakin ingin keluar?')) {
+                    API.post('/admin/auth/logout').then(() => {
+                        window.location.href = '/admin/login';
+                    }).catch(() => {
+                        window.location.href = '/admin/login';
+                    });
+                }
+            }
+            
+            // Try to load current user name
+            document.addEventListener('DOMContentLoaded', () => {
+                API.get('/admin/auth/me').then(res => {
+                    if (res.success && res.data) {
+                        document.getElementById('admin-user-name').textContent = res.data.full_name || res.data.username;
+                        document.getElementById('admin-user-avatar').textContent = (res.data.full_name || res.data.username).charAt(0).toUpperCase();
+                    }
+                }).catch(() => {
+                    // Not logged in, redirect to login
+                    window.location.href = '/admin/login';
+                });
+            });
+        </script>
         
         <div class="page-content" id="admin-app">
             <!-- Admin SPA content will be injected here -->
