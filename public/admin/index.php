@@ -17,6 +17,7 @@ $v = time();
     <title>Vicmic Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/admin.css?v=<?= $v ?>">
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
     <aside class="sidebar">
@@ -25,31 +26,31 @@ $v = time();
         </div>
         <nav class="sidebar-nav">
             <a href="/admin/" data-link class="nav-item active">
-                <span class="nav-icon">📊</span> Dashboard
+                <i data-feather="grid" class="nav-icon"></i> Dashboard
             </a>
             <a href="/admin/orders" data-link class="nav-item">
-                <span class="nav-icon">📦</span> Pesanan
+                <i data-feather="shopping-bag" class="nav-icon"></i> Pesanan
             </a>
             <a href="/admin/products" data-link class="nav-item">
-                <span class="nav-icon">💻</span> Produk
+                <i data-feather="box" class="nav-icon"></i> Produk
             </a>
             <a href="/admin/inventory" data-link class="nav-item">
-                <span class="nav-icon">🏢</span> Inventory
+                <i data-feather="layers" class="nav-icon"></i> Inventory
             </a>
             <a href="/admin/serial-numbers" data-link class="nav-item">
-                <span class="nav-icon">🏷️</span> Serial Numbers
+                <i data-feather="hash" class="nav-icon"></i> Serial Numbers
             </a>
             <a href="/admin/warehouses" data-link class="nav-item">
-                <span class="nav-icon">🏭</span> Warehouses
+                <i data-feather="home" class="nav-icon"></i> Warehouses
             </a>
             
             <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin: 20px 20px 10px; font-weight: 600;">Pengguna</div>
             
             <a href="/admin/customers" data-link class="nav-item">
-                <span class="nav-icon">👥</span> Pelanggan
+                <i data-feather="users" class="nav-icon"></i> Pelanggan
             </a>
             <a href="/admin/users" data-link class="nav-item">
-                <span class="nav-icon">🛡️</span> Admin
+                <i data-feather="shield" class="nav-icon"></i> Admin
             </a>
         </nav>
     </aside>
@@ -57,7 +58,7 @@ $v = time();
     <main class="main-content">
         <header class="topbar">
             <div class="topbar-search">
-                <input type="text" class="form-control" placeholder="Cari..." style="width: 300px; background: rgba(0,0,0,0.2); border: none;">
+                <input type="text" class="form-control" placeholder="Cari..." style="width: 300px; background: rgba(0,0,0,0.05); border: 1px solid var(--border-dark);">
             </div>
             <div class="topbar-user" style="display: flex; align-items: center; gap: 15px;">
                 <span style="font-weight: 500;" id="admin-user-name">Admin User</span>
@@ -79,14 +80,15 @@ $v = time();
             
             // Try to load current user name
             document.addEventListener('DOMContentLoaded', () => {
-                API.get('/admin/auth/me').then(res => {
+                feather.replace(); // Initialize feather icons
+                
+                API.get('/admin/me').then(res => {
                     if (res.success && res.data) {
                         document.getElementById('admin-user-name').textContent = res.data.full_name || res.data.username;
                         document.getElementById('admin-user-avatar').textContent = (res.data.full_name || res.data.username).charAt(0).toUpperCase();
                     }
                 }).catch(() => {
-                    // Not logged in, redirect to login
-                    window.location.href = '/admin/login';
+                    // Do not redirect here, let AdminApp handle the login UI.
                 });
             });
         </script>
@@ -110,5 +112,12 @@ $v = time();
     <script src="/assets/js/admin/users.js?v=<?= $v ?>"></script>
     <script src="/assets/js/admin/customers.js?v=<?= $v ?>"></script>
     <script src="/assets/js/admin/app.js?v=<?= $v ?>"></script>
+    <script>
+        // Re-initialize icons when SPA navigates
+        const observer = new MutationObserver(() => {
+            if(window.feather) feather.replace();
+        });
+        observer.observe(document.getElementById('admin-app'), { childList: true, subtree: true });
+    </script>
 </body>
 </html>
