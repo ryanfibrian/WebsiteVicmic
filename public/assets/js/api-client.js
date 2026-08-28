@@ -28,7 +28,18 @@ const API = {
 
         try {
             const response = await fetch(url, config);
-            const json = await response.json();
+            const text = await response.text();
+            let json;
+            
+            try {
+                json = JSON.parse(text);
+            } catch (parseError) {
+                console.error("API Response not JSON:", text);
+                throw { 
+                    status: response.status || 500, 
+                    message: 'Error Server: ' + (text ? text.substring(0, 100).replace(/(<([^>]+)>)/gi, "") : "Empty response")
+                };
+            }
 
             if (!response.ok) {
                 throw { status: response.status, ...json };
@@ -37,7 +48,8 @@ const API = {
             return json;
         } catch (error) {
             if (error.status) throw error;
-            throw { success: false, message: 'Koneksi gagal. Periksa internet Anda.', status: 0 };
+            console.error("Network Fetch Error:", error);
+            throw { success: false, message: 'Koneksi gagal: ' + (error.message || 'Unknown'), status: 0 };
         }
     },
 
