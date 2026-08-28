@@ -139,9 +139,6 @@ window.PageLogin = {
             
             <div class="auth-page">
                 <div class="auth-card animate-fade-up">
-                    <a href="/" data-link>
-                        <img src="/assets/img/logo.png" alt="Vicmic" class="auth-logo">
-                    </a>
                     <h1 class="auth-title">Selamat Datang</h1>
                     <p class="auth-subtitle">Login untuk melihat status pesanan dan mulai berbelanja.</p>
                     
@@ -227,9 +224,6 @@ window.PageRegister = {
             
             <div class="auth-page">
                 <div class="auth-card animate-fade-up">
-                    <a href="/" data-link>
-                        <img src="/assets/img/logo.png" alt="Vicmic" class="auth-logo">
-                    </a>
                     <h1 class="auth-title">Buat Akun</h1>
                     <p class="auth-subtitle">Daftar sekarang untuk kemudahan berbelanja di Vicmic.</p>
                     
@@ -332,9 +326,6 @@ window.PageForgotPassword = {
             
             <div class="auth-page">
                 <div class="auth-card animate-fade-up">
-                    <a href="/" data-link>
-                        <img src="/assets/img/logo.png" alt="Vicmic" class="auth-logo">
-                    </a>
                     <h1 class="auth-title">Lupa Password</h1>
                     <p class="auth-subtitle">Masukkan email yang terdaftar, kami akan mengirimkan link untuk reset password Anda.</p>
                     
@@ -421,9 +412,6 @@ window.PageResetPassword = {
             
             <div class="auth-page">
                 <div class="auth-card animate-fade-up">
-                    <a href="/" data-link>
-                        <img src="/assets/img/logo.png" alt="Vicmic" class="auth-logo">
-                    </a>
                     <h1 class="auth-title">Reset Password</h1>
                     <p class="auth-subtitle">Masukkan password baru untuk akun Anda.</p>
                     

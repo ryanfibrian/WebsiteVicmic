@@ -68,6 +68,9 @@ window.PageProfile = {
                     color: #64748b;
                     border-bottom: 3px solid transparent;
                     transition: all 0.2s;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
                 }
                 .profile-tab:hover {
                     color: #16a34a;
@@ -77,6 +80,8 @@ window.PageProfile = {
                     border-bottom-color: #16a34a;
                     background: #fff;
                 }
+                .tab-icon { display: none; }
+                .tab-label { display: block; }
                 .profile-content {
                     padding: 40px;
                     min-height: 400px;
@@ -170,10 +175,45 @@ window.PageProfile = {
                     border-color: #16a34a;
                 }
 
+                .order-filters-container {
+                    margin-bottom: 20px; overflow-x: auto; white-space: nowrap;
+                    display: flex; gap: 10px;
+                }
+
                 @media (max-width: 600px) {
-                    .profile-content { padding: 20px; }
-                    .profile-tabs { overflow-x: auto; }
-                    .profile-tab { padding: 12px 20px; white-space: nowrap; }
+                    .profile-page { padding: 15px 10px 80px 10px; min-height: 100vh; }
+                    .profile-header { padding: 25px 20px; flex-direction: column; text-align: center; gap: 15px; }
+                    .profile-avatar { width: 70px; height: 70px; font-size: 2rem; margin: 0 auto; }
+                    .profile-content { padding: 20px; min-height: auto; }
+                    
+                    /* Bottom Tab Nav for Mobile */
+                    .profile-tabs {
+                        position: fixed; bottom: 0; left: 0; right: 0;
+                        background: #fff; border-top: 1px solid #e2e8f0; border-bottom: none;
+                        z-index: 1000; justify-content: space-around;
+                        box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+                    }
+                    .profile-tab {
+                        flex-direction: column; padding: 10px 5px; width: 33%;
+                        border-bottom: none; border-top: 3px solid transparent;
+                        font-size: 0.75rem; font-weight: 500;
+                        gap: 4px;
+                    }
+                    .profile-tab.active {
+                        border-top-color: #16a34a; border-bottom-color: transparent; background: transparent;
+                    }
+                    .tab-icon { display: block; font-size: 1.25rem; line-height: 1; }
+                    
+                    /* Fix filters scrolling */
+                    .order-filters-container {
+                        flex-wrap: wrap; white-space: normal; gap: 8px; justify-content: flex-start;
+                    }
+                    .filter-btn { margin: 0; flex: 1 1 calc(33.333% - 8px); padding: 8px; font-size: 0.8rem; text-align: center; }
+                    
+                    /* Form responsive */
+                    form#form-profile .form-group { margin-bottom: 15px; }
+                    .btn-primary, .btn-logout { width: 100%; text-align: center; }
+                    #form-profile > div:last-child { flex-direction: column; gap: 15px; }
                 }
             </style>
             
@@ -190,9 +230,15 @@ window.PageProfile = {
                     </div>
                     
                     <div class="profile-tabs">
-                        <div class="profile-tab ${this.state.activeTab === 'info' ? 'active' : ''}" onclick="PageProfile.switchTab('info')">Informasi Akun</div>
-                        <div class="profile-tab ${this.state.activeTab === 'address' ? 'active' : ''}" onclick="PageProfile.switchTab('address')">Buku Alamat</div>
-                        <div class="profile-tab ${this.state.activeTab === 'orders' ? 'active' : ''}" onclick="PageProfile.switchTab('orders')">Pesanan Saya</div>
+                        <div class="profile-tab ${this.state.activeTab === 'info' ? 'active' : ''}" onclick="PageProfile.switchTab('info')">
+                            <span class="tab-icon">👤</span><span class="tab-label">Akun</span>
+                        </div>
+                        <div class="profile-tab ${this.state.activeTab === 'address' ? 'active' : ''}" onclick="PageProfile.switchTab('address')">
+                            <span class="tab-icon">📍</span><span class="tab-label">Alamat</span>
+                        </div>
+                        <div class="profile-tab ${this.state.activeTab === 'orders' ? 'active' : ''}" onclick="PageProfile.switchTab('orders')">
+                            <span class="tab-icon">📦</span><span class="tab-label">Pesanan</span>
+                        </div>
                     </div>
                     
                     <div class="profile-content" id="tab-content">
@@ -210,7 +256,8 @@ window.PageProfile = {
         this.state.activeTab = tab;
         // Update tab classes
         document.querySelectorAll('.profile-tab').forEach(el => {
-            if (el.textContent.toLowerCase().includes(tab === 'info' ? 'akun' : tab === 'address' ? 'alamat' : 'pesanan')) {
+            const labelText = el.querySelector('.tab-label').textContent.toLowerCase();
+            if (labelText.includes(tab === 'info' ? 'akun' : tab === 'address' ? 'alamat' : 'pesanan')) {
                 el.classList.add('active');
             } else {
                 el.classList.remove('active');
@@ -419,7 +466,7 @@ window.PageProfile = {
     async renderTabOrders(container) {
         container.innerHTML = `
             <h2 style="margin-bottom: 20px;">Riwayat Pesanan</h2>
-            <div style="margin-bottom: 20px; overflow-x: auto; white-space: nowrap;">
+            <div class="order-filters-container">
                 <button class="filter-btn ${this.state.orderFilter === 'all' ? 'active' : ''}" onclick="PageProfile.filterOrders('all')">Semua</button>
                 <button class="filter-btn ${this.state.orderFilter === 'diproses' ? 'active' : ''}" onclick="PageProfile.filterOrders('diproses')">Diproses</button>
                 <button class="filter-btn ${this.state.orderFilter === 'dikirim' ? 'active' : ''}" onclick="PageProfile.filterOrders('dikirim')">Dikirim</button>
